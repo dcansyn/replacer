@@ -1,5 +1,11 @@
 ﻿using System.Text;
 
+string[] replaceExcludes =
+    "png,jpeg,jpg,bmp,gif,pdf,doc,docx,xlsx,xls,mp4,mp3,wav,wma,aac,flac,m4a,woff,woff2,tiff,svg"
+    .Split(',')
+    .Select(x => $".{x}")
+    .ToArray();
+
 Console.WriteLine("Değiştirme sırasında mevcut dosyalar korunsun mu? y/n");
 var skipExistsFile = Console.ReadLine() == "y";
 
@@ -71,6 +77,12 @@ void Move(string directoryPath)
 
         if (skipExistsFile && File.Exists(destinationFile.FullName))
             continue;
+
+        if (replaceExcludes.Contains(fileInfo.Extension))
+        {
+            File.Copy(fileInfo.FullName, destinationFile.FullName);
+            continue;
+        }
 
         using var sr = new StreamReader(fileInfo.FullName, new UTF8Encoding(false));
         using var st = new StreamWriter(destinationFile.FullName, false, new UTF8Encoding(false));
