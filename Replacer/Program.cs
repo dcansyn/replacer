@@ -1,16 +1,12 @@
 ﻿using System.Text;
 
 string[] replaceExcludes =
-    "png,jpeg,jpg,bmp,gif,pdf,doc,docx,xlsx,xls,mp4,mp3,wav,wma,aac,flac,m4a,woff,woff2,tiff,svg,ico,sln"
+    "png,jpeg,jpg,bmp,gif,pdf,doc,docx,xlsx,xls,mp4,mp3,wav,wma,aac,flac,m4a,woff,woff2,tiff,svg,ico"
     .Split(',')
     .Select(x => $".{x}")
     .ToArray();
 
-string[] excludeFolders =
-    ".git,.vs,bin,obj"
-    .Split(',')
-    .Select(x => $".{x}")
-    .ToArray();
+string[] excludeFolders = ".git,.vs,bin,obj".Split(',');
 
 Console.WriteLine("Değiştirme sırasında mevcut dosyalar korunsun mu? y/n");
 var skipExistsFile = Console.ReadLine() == "y";
@@ -74,6 +70,8 @@ void Move(string directoryPath)
     foreach (var item in files)
     {
         var fileInfo = new FileInfo(item);
+        if (excludeFolders.Contains(fileInfo.Directory?.Name)) continue;
+
         var destinationPath = $@"{directoryPath}\{fileInfo.Name}";
 
         foreach (var data in replaceData)
