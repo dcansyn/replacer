@@ -1,7 +1,13 @@
 ﻿using System.Text;
 
 string[] replaceExcludes =
-    "png,jpeg,jpg,bmp,gif,pdf,doc,docx,xlsx,xls,mp4,mp3,wav,wma,aac,flac,m4a,woff,woff2,tiff,svg"
+    "png,jpeg,jpg,bmp,gif,pdf,doc,docx,xlsx,xls,mp4,mp3,wav,wma,aac,flac,m4a,woff,woff2,tiff,svg,ico,sln"
+    .Split(',')
+    .Select(x => $".{x}")
+    .ToArray();
+
+string[] excludeFolders =
+    ".git,.vs,bin,obj"
     .Split(',')
     .Select(x => $".{x}")
     .ToArray();
@@ -59,6 +65,8 @@ void Move(string directoryPath)
     foreach (var directory in directories)
     {
         var directoryInfo = new DirectoryInfo(directory);
+        if (excludeFolders.Contains(directoryInfo.Name)) continue;
+
         Move($@"{directoryPath}\{directoryInfo.Name}");
     }
 
