@@ -6,7 +6,7 @@ string[] replaceExcludes =
     .Select(x => $".{x}")
     .ToArray();
 
-string[] excludeFolders = ".git,.vs,bin,obj".Split(',');
+string[] excludeFolders = ".git,.vs,bin,obj,packages".Split(',');
 
 Console.WriteLine("Değiştirme sırasında mevcut dosyalar korunsun mu? y/n");
 var skipExistsFile = Console.ReadLine() == "y";
